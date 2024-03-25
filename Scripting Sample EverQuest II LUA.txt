@@ -1,0 +1,527 @@
+
+------------------------------------
+------------------------------------
+-- Script Created By: Noah Holmes --
+------------------------------------
+------------------------------------
+
+
+local spell = ModifyPoolSpellEffectClass:derive()
+
+function spell:onApply(source_entity, target_entity)
+    local damage_done = target_entity:doGetTotalDamage()
+    source_entity:doSetTempValue("totalDamage", damage_done, 60)    
+    if (source_entity:onIsDead() ~= true) then        
+        local playerHP = source_entity:onGetHitPoints()
+        playerHP = playerHP + damage_done        
+        spell:onTerminate(source_entity:doSetHealth(playerHP))        
+    end      
+end
+
+return spell
+
+
+local trigger = TriggeredSpellEffectClass:derive()
+
+function trigger:onDamageSpellHit( hit_entity, i_damage, s_damagetype, b_hostile, hitter_entity, s_spell, castingtime )
+    hitter_entity:doSetTempValue("diffusion_damage", i_damage)  
+    TriggeredSpellEffectClass:onDamageSpellHit( hit_entity, i_damage, s_damagetype, b_hostile, hitter_entity, s_spell, castingtime )
+end
+
+return trigger
+
+
+local spell = PersistentSpellEffectClass:derive()
+
+function spell:onApply( source_entity, target_entity )
+    local damageSpellHitAmount = source_entity:doGetTempValue("diffusion_damage")
+    local normalizedHealPercentage = damageSpellHitAmount * 0.05
+    self.normalizedHealPercentage = normalizedHealPercentage
+    self.source_entity = source_entity
+    self.source_entity:doAddNormalizedDamage(normalizedHealPercentage, "Heal")
+    PersistentSpellEffectClass.onApply(self, source_entity, target_entity ) 
+end
+
+function spell:onRemove()
+    self.source_entity:doAddNormalizedDamage(-self.normalizedHealPercentage, "Heal")
+    PersistentSpellEffectClass.onRemove(self)    
+end
+
+return spell
+
+
+
+
+
+local creature = CreatureClass:derive() 
+
+function creature:onRegistration()
+    CreatureClass.onRegistration(self)
+    local zone = self:doGetZone()
+    self.zone = zone   
+    self.zone:doAddListener(self,"resetWOB")      
+end 
+
+function creature:onHail()
+end
+
+function creature:onAoiEnter(srcEntity)      
+    if (srcEntity:isA("PlayerClass")) then        
+        if self:onIsFighting() == false then          
+        local quest = srcEntity:doGetQuest("_exp04/epics/assassin/assassin_x1")
+            if quest then                
+                if (quest:doGetStage(28):isPartComplete(2) == false) and (quest:doGetStage(28):isPartComplete(1) == true) then                
+                    if srcEntity:onQueryLanguage("Draconic") == true then                       
+                        if self:doGetTempValue("beganSpeech") ~= 1 then
+                            self:doFace(srcEntity)
+                            self.player = srcEntity
+                            self:beginSpeech()
+                            self:doSetTempValue("beganSpeech",1)
+                        end
+                    elseif srcEntity:onQueryLanguage("Draconic") == false then 
+                        self:doSetLanguage("Common")                              
+                        self:doSay("noDraconic", nil, 45)
+                        self:doSetLanguage("Draconic")
+                    end
+                end
+            end
+        end
+    end
+end
+    
+
+function creature:beginSpeech()
+    self:doSay("speech1", nil, 100)   
+    self:doScheduleEvent("doSay", 10, "speech2", nil, 100)
+    self:doScheduleEvent("doSay", 20, "speech3", nil, 100)
+    self:doScheduleEvent("doSay", 30, "speech4", nil, 100)    
+    self:doScheduleEvent("changeRoleAndAttack", 43)     
+end    
+
+function creature:changeRoleAndAttack()
+        self:doFace(self.player)
+        local facing = self:onGetHeading()        
+        self:onSetHeading(facing)        
+        self:doSetRole("standard")    
+        self:onRoleChanged()
+        self:doSetDefaultVerb("attack") 
+        self:doSetTempValue("beganSpeech", nil)   
+        local members = self.player:doGetGroupMembers(true,false,true)
+        for k,v in ipairs(members) do
+            local target = members[1]  
+            self:doAddHate(target, 1000)     
+            self:doLockEncounter(target, true)
+        end    
+        self.zone:doNotifyListeners("resetTempValues", self) 
+        self.player = nil    
+end
+
+function creature:resetWOB()
+        self:doSetRole("actor")    
+        self:onRoleChanged()
+        self:doSetDefaultVerb("hail")         
+end     
+
+return creature
+
+
+
+local creature = CreatureClass:derive() 
+
+function creature:onRegistration()
+    CreatureClass.onRegistration(self)
+    self:doScheduleEvent("tauntPlayers",1)
+    local zone = self:doGetZone()
+    self.zone = zone
+end 
+
+function creature:tauntPlayers()
+    local players = self.zone:doGetAllPlayers() 
+    local text = t4.doLookup( "\\\#FF0000Protector of the Blade shouts, 'You should not be here mortals! Do not trifle with things you do not understand or are too arrogant to heed!'" )
+    self.zone:doSendText(text)  
+    for i, member in ipairs(players) do
+    ui.doOnscreenMsg(players[i], t4.doLookup( "\\#FF0000Protector of the Blade shouts, 'You should not be here mortals! Do not trifle with things you do not understand or are too arrogant to heed!'"), "", 5)
+    end   
+    self:doSetVisibleEquipment("primary", nil)
+    self:doSetVisibleEquipment("secondary", nil)    
+end
+
+function creature:onDeath(srcEntity, damageType)
+    self:doSay("droagSlain", nil, 300) 
+    self:callHook("onDeath", srcEntity, damageType)    
+end
+
+function creature:onAutoAttackOn(target_entity)
+    CreatureClass.onAutoAttackOn(self,target_entity)
+    self:doSetVisibleEquipment("primary", "accessories/wieldable_items/weapons/sword/long_sword/long_sword_magic_fire_uber")
+    self:doSetVisibleEquipment("secondary", "accessories/wieldable_items/weapons/sword/long_sword/long_sword_magic_fire_uber")
+end
+
+function creature:imHome()
+    local players = self.zone:doGetAllPlayers() 
+    local text = t4.doLookup( "\\\#FF0000Protector of the Blade shouts, 'You will never find what you seek, the dragons will not allow it. When will you learn?'" )
+    self.zone:doSendText(text)  
+    for i, member in ipairs(players) do
+    ui.doOnscreenMsg(players[i], t4.doLookup( "\\#FF0000Protector of the Blade shouts, 'You will never find what you seek, the dragons will not allow it. When will you learn?'"), "", 5)
+    end  
+end
+
+return creature
+
+
+
+
+local widget = WidgetClass:derive()
+
+--Add Verb:  
+function widget:onRegistration()
+    self:doAddVerb("Wack-a-skull!", "onSearch", VERB_DISTANCES.NEAR, "canSearch")
+    self:doSetDefaultVerb("Wack-a-skull!") 
+    self.zone = self:doGetZone()
+    self.zone:doAddListener(self, "animate01")
+    self.zone:doAddListener(self, "flash01")    
+end
+
+--Widget interaction:
+function widget:onSearch(srcEntity)
+    self.zone:doSetTempValue("canHit01", 0)
+    self.hit = self.zone:doGetTempValue("hit")
+    self.hit = self.hit + 1
+    self.zone:doSetTempValue("hit", self.hit)
+    self:lockMe()  
+end    
+
+--Widget Use checks:
+function widget:canSearch(srcEntity)   
+    if (self.zone:doGetTempValue("event_inny") == srcEntity:onGetName()) and (self.zone:doGetTempValue("canHit01") == 1) then
+        return true
+    else          
+        return false
+    end
+end
+
+function widget:flash01()
+    self:doState("result_sparkle_scan_up")
+end
+
+function widget:animate01()
+    self:onSetPitch(-45)
+    self:doState("result_sparkle_scan_up")
+    self:doScheduleEvent("lockMe",1.5)
+end
+
+function widget:lockMe()
+    self:onSetPitch(0)
+end
+
+return widget
+
+
+local stage = QuestStageClass:derive()
+  
+function stage:onGroupQuestCreatureKilled(player, creature, roll, player_two, hook)
+    local p = self:doGetQuest():doGetOwner()
+    local primary = player:doGetEquipmentItem(EQUIPMENT_SLOT_TYPE.WEAPON_PRIMARY)
+    local secondary = player:doGetEquipmentItem(EQUIPMENT_SLOT_TYPE.WEAPON_SECONDARY)
+    if creature:onGetSpawnName() == "characters/_exp04/exp04_rgn_veeshans_peak/boss/druushk" then
+        if primary and secondary and primary:onGetSpawnName() == "weapons/080/_epics/080_08_legendary_fang_of_ichor" and
+        secondary:onGetSpawnName() == "weapons/000/_exp04/blackened_leviathan_heart" then
+            local text = t4.doLookup("The heart of the Leviathan decays as the soul of Druushk is drawn into the Fang of Ichor, empowering it!")
+            p:doDisplayText(text)       
+            self:doProcessReference(p,"druushkSlainCorrectly")
+        else
+            local text = t4.doLookup("You must have the Fang of Ichor and the heart of the Leviathan equipped to capture the soul of Druushk!")
+            p:doDisplayText(text)
+        end
+    end    
+end
+
+return stage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+_________________________________________________________________________________________________________________________________________
+_________________________________________________________________________________________________________________________________________
+_________________________________________________________________________________________________________________________________________
+
+local dialog = DialogNodeClass:derive()
+
+function dialog:onSelected(player_entity, npc_entity)
+    local quest = player_entity:doGetQuest("_exp04/epics/assassin/assassin_x1")
+    if quest ~= nil then
+    quest:doGiveRewards(-4)  
+    end
+end 
+
+return dialog
+
+
+_________________________________________________________________________________________________________________________________________
+
+
+local dialog = DialogNodeClass:derive()
+
+function dialog:onSelected(player_entity, npc_entity)
+    player_entity:doRemoveItemFromInventory("miscitems/_exp03/exp03_rgn_lesser_faydark/000_01_codex_addendum", 1)
+end
+
+return dialog
+
+
+_________________________________________________________________________________________________________________________________________
+
+local dialog = DialogNodeClass:derive()
+
+function dialog:onSelected(player_entity, npc_entity)
+    local quest = srcEntity:doGetQuest("_exp03/exp03_rgn_lesser_faydark/kurina_x2")
+    if quest ~= nil then
+        player_entity:doSetTempValue("ready", 1, 30)
+    end
+end
+
+return dialog
+
+_________________________________________________________________________________________________________________________________________
+
+local dialog = DialogNodeClass:derive()
+
+function dialog:onSelected(player_entity, npc_entity)
+    local quest = player_entity:doGetQuest("_exp03/exp03_rgn_lesser_faydark/kurina_x2")
+    if quest ~= nil then
+        npc_entity:doGetZone():doNotifyListeners("run_tuilla_script", npc_entity)
+   end
+end
+
+return dialog
+
+_________________________________________________________________________________________________________________________________________
+
+
+local widget = WidgetClass:derive()
+
+--Add Verb:  
+function widget:onRegistration()
+    self:doAddVerb("Break off a small piece of bark", "onSearch", VERB_DISTANCES.NEAR, "canSearch")
+    self:doSetDefaultVerb("Break off a small piece of bark")
+end
+
+--Widget interaction:
+function widget:onSearch(srcEntity)  
+    srcEntity:doDisplayText( "You break off a small piece of bark and place it into your bag.")
+    srcEntity:doGiveTreasure("miscitems/_exp03/signature/000_01_bark")
+end    
+
+--Widget Use checks:
+function widget:canSearch(srcEntity)   
+    --Has the widget been used recently: 
+        --Does the player already have the quest, are they on the right stage and have they completed it:
+        local quest = srcEntity:doGetQuest("signature/exp03_ivy_shrouded_orb")
+        if quest then
+            local stage = quest:doGetCurStageNumber()
+            if (stage == 23) and (quest:doGetStage(23):isPartComplete(2) == false) then
+                return true
+            end              
+        end
+end
+
+return widget
+
+_________________________________________________________________________________________________________________________________________
+
+
+local stage = QuestStageClass:derive()
+
+function stage:onGroupQuestCreatureKilled(player,target,roll,player_two,hook)
+    if roll <= 30 then
+        self:callHook("onGroupQuestCreatureKilled",player,target,roll,player_two,hook)
+        if (target:queryClassifiedAs("grovespirit")) then
+            player:doGiveTreasure("miscitems/_exp03/exp03_rgn_lesser_faydark/000_01_wisp_essence")
+        end
+    end
+end
+
+return stage
+
+
+
+_________________________________________________________________________________________________________________________________________
+
+
+local group = self:doGetZone():doGetAllPlayers()
+for k,v in ipairs(group) do
+    local quest = v:doGetQuest("quest_flag")
+    if quest then
+        if not quest:doCheckCompleted() then
+            quest:doGetStage(1):doProcessReference(v,"reference")
+        end
+    end
+end
+
+_________________________________________________________________________________________________________________________________________
+
+
+local door = DoorClass:derive()
+
+function door:onRegistration()   
+    WidgetClass.onRegistration( self )   
+    -- If door is open and has an autoclose timer set it now
+    if ( self.isOpen and (self.fAutoCloseTime &gt; 0) ) then
+        self.iAutoCloseHandle = self:doScheduleEvent( "doClose", self.fAutoCloseTime )
+    end
+    
+    self:doAddVerb("Open", "openDoor", VERB_DISTANCES.NEAR, "canOpen")
+    self:doSetDefaultVerb("Open")
+end
+
+function door:canOpen(srcEntity)
+    if (srcEntity:hasItem("miscitems/_exp03/exp03_dun_crushbone_keep/quest/000_01_crushbonecellkey")) then
+        return true
+    else
+        return false
+    end
+end
+
+function door:openDoor( srcEntity )
+    self:doOpen()
+    local zone = self:doGetZone()
+    zone:doSetTempValue("cell_door01_opened", true, 60)
+end
+
+return door
+
+
+
+_________________________________________________________________________________________________________________________________________
+
+
+
+function trigger:onTrigger(trigger_entity, trigger_event)
+    local all_players = self.zone:doGetAllPlayers()
+    local players = {}
+    for k,v in ipairs(all_players) do
+        if v:doGetGMLevel() == 0 then
+            table.insert(players,v)
+        end
+    end
+    if (trigger_entity:isA("PlayerClass")) then
+        local value = self.zone:doGetTempValue("inArenaVolume")
+        if (trigger_event == TRIGGER_TYPE.AOI_ENTER) then
+            if value == nil then 
+                value = 0
+            end
+            value = value +1
+            self.zone:doSetTempValue("inArenaVolume", value)
+            if value == getn(players) and self.zone:doGetTempValue("lockEvent") ~= true and self.zone:doGetTempValue("groupWon") == false then
+                self.zone:doSetTempValue("lockEvent", true)   
+                self.zone:doNotifyListeners("beginEventArena", self)
+            end            
+        elseif (trigger_event == TRIGGER_TYPE.AOI_EXIT) then
+            if trigger_entity:isA("PlayerClass") then
+                value = value -1
+                self.zone:doSetTempValue("inArenaVolume", value)
+            end
+        end
+    end    
+end
+
+
+
+
+_________________________________________________________________________________________________________________________________________
+
+
+local dialog = DialogNodeClass:derive()
+
+function dialog:onSelected(pc, npc)
+    local group = pc:doGetGroupMembers(true, false, false)
+    for k,v in ipairs(group) do
+        local quest = v:doGetQuest("deathfist/vuzak_x1")
+        if not quest then
+            if v:onGetLevel() >= 36 then
+                v:doOfferQuest(npc,"deathfist/vuzak_x1")
+            end
+        end
+    end
+end
+
+return dialog
+
+
+_________________________________________________________________________________________________________________________________________
+
+
+local dialog = DialogNodeClass:derive() 
+
+function dialog:onSelected(srcEntity)
+    local zone = self:doGetZone()    
+    local td = zone:doGetPersistentValue("server","event","halloween_scoreboard")
+    local n = {}
+    if (t == nil) then --Sets up the table with score 0 player Nobodiez for 1st through 5th place if the persistent value is empty
+        local sb = {}
+            for i=1,5 do
+                sb[i] = {}
+                sb[i]["score"] = 0
+                sb[i]["player"] = "Nobodiez"
+            end
+        td = pickle(sb)
+    end    
+
+    if (td ~= nil) then
+        local t = unpickle(td)
+        local newscore = false
+        for i in t do --determines if the player set a new score. i is the place
+            if ((newscore == true)) then
+                if (i <= 5) then
+                    n[i] = {}
+                    n[i]["score"] = t[i-1]["score"]
+                    n[i]["player"] = t[i-1]["player"]
+                end
+            else
+                if (x > t[i]["score"]) then
+                    n[i] = {}
+                    n[i]["score"] = x
+                    n[i]["player"] = srcEntity:onGetName()
+                    newscore = true
+                else 
+                    n[i] = {}
+                    n[i]["score"] = t[i]["score"]
+                    n[i]["player"] = t[i]["player"]
+                end
+            end
+        end
+        zone:doSetPersistentValue("server","event","halloween_scoreboard", pickle(n))
+    end
+end 
+
+return dialog
+
+_________________________________________________________________________________________________________________________________________
+
+function spawn:summon_grelkor()
+    local players = self:doGetZone():doGetAllPlayers() 
+    if self:onIsSpawned() ~= true then
+        self:doScheduleEvent("arise", 3)
+	local text = t4.doExpand( "\\\#FF0000Grelkor the Malignant shouts, 'FOOLS! Who dares awaken me?!'" )
+        self:doGetZone():doSendText(text)  
+        for i, member in ipairs(players) do
+        ui.doOnscreenMsg(players[i], t4.doLocalize( "\\#FF0000Grelkor the Malignant shouts, 'FOOLS! Who dares awaken me?!'"), "", 5)
+        end
+    end
+end
+
+
+
+_________________________________________________________________________________________________________________________________________

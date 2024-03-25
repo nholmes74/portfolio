@@ -1,0 +1,1281 @@
+#include maps\_utility;
+#include maps\_vehicle;
+#include maps\_anim;
+#include common_scripts\utility;
+#include maps\_hud_util;
+#include maps\_vehicle_aianim;
+#include maps\_patrol;
+main()
+{
+	level.weaponClipModels = [];
+	level.weaponClipModels[0] = "weapon_m16_clip";
+	level.weaponClipModels[1] = "weapon_dragunov_clip";
+	level.weaponClipModels[2] = "weapon_ak47_clip";
+	level.weaponClipModels[3] = "weapon_g36_clip";
+	level.weaponClipModels[4] = "weapon_ak74u_clip";
+	level.weaponClipModels[5] = "weapon_mp5_clip";
+	precachestring( &"NOAH_TEST_INTRO_1" );
+	precachestring( &"NOAH_TEST_INTRO_2" );
+	precachestring( &"NOAH_TEST_INTRO_3" );
+	precachestring( &"NOAH_TEST_INTRO_4" );
+	precachestring( &"NOAH_TEST_INTRO_5" );	
+	precachestring( &"NOAH_TEST_OBJ_VIP" );
+	precachestring( &"NOAH_TEST_OBJ_RADIO" );
+	precachestring( &"NOAH_TEST_OBJ_RADIO_HINT" );
+	precachestring( &"NOAH_TEST_OBJ_LZ" );
+	precachestring( &"NOAH_TEST_HELI_ENROUTE" );
+	precachestring( &"NOAH_TEST_OBJ_DEFEND" );	
+	precachestring( &"NOAH_TEST_OBJ_EXIT" );
+	precachestring( &"NOAH_TEST_OBJ_HELI_HINT" );
+	precachestring( &"NOAH_TEST_OBJ_COMPLETED" );	
+	precachestring( &"NOAH_TEST_GAMEPLAY_1A" );
+	precachestring( &"NOAH_TEST_GAMEPLAY_1B" );
+	precachestring( &"NOAH_TEST_GAMEPLAY_2A" );
+	precachestring( &"NOAH_TEST_GAMEPLAY_2B" );
+	precachestring( &"NOAH_TEST_GAMEPLAY_3" );	
+	precachestring( &"NOAH_TEST_GAMEPLAY_4_VOL" );	
+	precachestring( &"NOAH_TEST_NVG_HINT" );	
+	precachestring( &"NOAH_TEST_GRENADE_HINT" );	
+	precachestring( &"NOAH_TEST_FLASHBANG_HINT" );		
+//	precachestring( &"" );	
+//****************************************************************************************************************
+	maps\_treadfx::setvehiclefx( "blackhawk", "brick" ,"treadfx/heli_dust_ambush" );
+ 	maps\_treadfx::setvehiclefx( "blackhawk", "bark" ,"treadfx/heli_dust_ambush" );
+ 	maps\_treadfx::setvehiclefx( "blackhawk", "carpet" ,"treadfx/heli_dust_ambush" );
+ 	maps\_treadfx::setvehiclefx( "blackhawk", "cloth" ,"treadfx/heli_dust_ambush" );
+ 	maps\_treadfx::setvehiclefx( "blackhawk", "concrete" ,"treadfx/heli_dust_ambush" );
+ 	maps\_treadfx::setvehiclefx( "blackhawk", "dirt" ,"treadfx/heli_dust_ambush" );
+ 	maps\_treadfx::setvehiclefx( "blackhawk", "flesh" ,"treadfx/heli_dust_ambush" );
+ 	maps\_treadfx::setvehiclefx( "blackhawk", "foliage" ,"treadfx/heli_dust_ambush" );
+ 	maps\_treadfx::setvehiclefx( "blackhawk", "glass" ,"treadfx/heli_dust_ambush" );
+ 	maps\_treadfx::setvehiclefx( "blackhawk", "grass" ,"treadfx/heli_dust_ambush" );
+ 	maps\_treadfx::setvehiclefx( "blackhawk", "gravel" ,"treadfx/heli_dust_ambush" );
+ 	maps\_treadfx::setvehiclefx( "blackhawk", "ice" ,"treadfx/heli_dust_ambush" );
+ 	maps\_treadfx::setvehiclefx( "blackhawk", "metal" ,"treadfx/heli_dust_ambush" );
+ 	maps\_treadfx::setvehiclefx( "blackhawk", "mud" ,"treadfx/heli_dust_ambush" );
+ 	maps\_treadfx::setvehiclefx( "blackhawk", "paper" ,"treadfx/heli_dust_ambush" );
+ 	maps\_treadfx::setvehiclefx( "blackhawk", "plaster" ,"treadfx/heli_dust_ambush" );
+ 	maps\_treadfx::setvehiclefx( "blackhawk", "rock" ,"treadfx/heli_dust_ambush" );
+ 	maps\_treadfx::setvehiclefx( "blackhawk", "sand" ,"treadfx/heli_dust_ambush" );
+ 	maps\_treadfx::setvehiclefx( "blackhawk", "snow" ,"treadfx/heli_dust_ambush" );
+ 	maps\_treadfx::setvehiclefx( "blackhawk", "water" ,"treadfx/heli_dust_ambush" );
+ 	maps\_treadfx::setvehiclefx( "blackhawk", "wood" ,"treadfx/heli_dust_ambush" );
+ 	maps\_treadfx::setvehiclefx( "blackhawk", "asphalt" ,"treadfx/heli_dust_ambush" );
+ 	maps\_treadfx::setvehiclefx( "blackhawk", "ceramic" ,"treadfx/heli_dust_ambush" );
+ 	maps\_treadfx::setvehiclefx( "blackhawk", "plastic" ,"treadfx/heli_dust_ambush" );
+ 	maps\_treadfx::setvehiclefx( "blackhawk", "rubber" ,"treadfx/heli_dust_ambush" );
+ 	maps\_treadfx::setvehiclefx( "blackhawk", "cushion" ,"treadfx/heli_dust_ambush" );
+ 	maps\_treadfx::setvehiclefx( "blackhawk", "fruit" ,"treadfx/heli_dust_ambush" );
+ 	maps\_treadfx::setvehiclefx( "blackhawk", "painted metal" ,"treadfx/heli_dust_ambush" );
+ 	maps\_treadfx::setvehiclefx( "blackhawk", "default" ,"treadfx/heli_dust_ambush" );
+	maps\_treadfx::setvehiclefx( "blackhawk", "none" ,"treadfx/heli_dust_ambush" );	
+//****************************************************************************************************************	
+	setsaveddvar( "sm_sunShadowScale", "0.5" );
+//****************************************************************************************************************	
+	maps\_blackhawk::main( "vehicle_blackhawk_hero" );
+	maps\noah_test_anim::main();
+	maps\_load::main();	
+//	maps\_nightvision::main();
+	maps\_compass::setupMiniMap("compass_map_noah_test");
+	setsaveddvar("compassmaxrange","2000");
+//*************************************
+		
+	level.player takeallweapons();
+	level.player disableWeapons();
+	level.player SetStance( "crouch" );
+	level.player AllowStand( false );
+	level.player AllowProne( false );
+	level.player AllowJump( false );
+	level.player AllowLean( false );
+	level.player AllowSprint( false );
+	level.player setViewmodel( "viewmodel_base_viewhands" );
+	precacheshader( "black" );
+	level.stand = 1500;
+	level.crouch = 600;
+	level.prone = 300;
+	level.messageTime = 4;
+	level.ySpacing = -250;
+	flag_init ( "in_shadow" );
+	flag_init ( "in_light" );
+	flag_init ( "music_playing" );
+	flag_init ( "music_decay_running" );	
+	flag_init ( "spotted_music_playing" );
+	flag_init ( "looking_music_playing" );
+	flag_init ( "NPC_in_combat" );
+	flag_init ( "blackhawk_at_LZ" );
+	flag_init ( "obj_VIP_Complete" );	
+	flag_init ( "obj_RADIO_Complete" );
+	flag_init ( "obj_LZ_Complete" );	
+	flag_init ( "obj_EXIT_Complete" );
+	flag_init ( "LZ_SpawnComplete" );
+	flag_init ( "LZ_Clear" );
+        level.player freezeControls( true );
+	thread load_screen();	
+/*	
+	thread test_LZ();
+*/	
+}
+//****************************************************************************************************************   
+load_screen()
+{       
+	thread maps\_introscreen::introscreen_generic_black_fade_in( 22, 6);
+//	cinematicingamesync( "blackout_fade" );
+	lines = [];
+	lines[ lines.size ] = &"NOAH_TEST_INTRO_1";
+	lines[ "date" ] = &"NOAH_TEST_INTRO_2";
+	lines[ lines.size ] = &"NOAH_TEST_INTRO_3";
+	lines[ lines.size ] = &"NOAH_TEST_INTRO_4";
+//	lines[ lines.size ] = &"NOAH_TEST_INTRO_5";
+	thread maps\_introscreen::introscreen_feed_lines( lines );	
+	zoomHeight = 16000;
+	wait 8.0;
+	thread gameplay_messaging();
+}
+gameplay_messaging()
+{
+	waittime = ( level.messageTime * 0.75 );
+	lines = &"NOAH_TEST_GAMEPLAY_1A";
+	thread introscreen_feed_lines( lines );
+	wait waittime;
+	lines = &"NOAH_TEST_GAMEPLAY_1B";
+	thread introscreen_feed_lines( lines );
+	wait waittime;
+	lines = &"NOAH_TEST_GAMEPLAY_2A";
+	thread introscreen_feed_lines( lines );
+	wait waittime;
+	lines = &"NOAH_TEST_GAMEPLAY_2B";
+	thread introscreen_feed_lines( lines );
+	wait waittime;
+	lines = &"NOAH_TEST_GAMEPLAY_3";
+	thread introscreen_feed_lines( lines );
+	wait waittime;
+	level.player freezeControls( false );
+	init_map_scripting();
+}
+introscreen_feed_lines( lines )
+{
+	//get array keys returns the keys in reverse order
+	subtitle = newHudElem(); 
+	waittime = ( level.messageTime * 2 );
+	subtitle.x = -350; 
+	level.ySpacing = ( level.ySpacing + 15 );
+	subtitle.y = level.ySpacing; 
+	subtitle settext( lines ); 
+	subtitle.fontScale = 1.25; 
+	subtitle.alignX = "left"; 
+	subtitle.alignY = "top"; 
+	subtitle.horzAlign = "center"; 
+	subtitle.vertAlign = "middle"; 
+	subtitle.sort = 1;		
+	subtitle.color = (0.8, 1.0, 0.8);
+	subtitle.font = "objective";
+	subtitle.glowColor = (0.3, 0.6, 0.3);
+	subtitle.glowAlpha = 1;
+ 	subtitle.foreground = 1;
+ 	subtitle fadeOverTime( 0.1 );
+	subtitle SetPulseFX( 30, 8000, 700 ); 	
+ 	wait waittime;
+ 	subtitle destroy();
+}
+init_map_scripting()
+{	
+//       level thread fadeOverlay( "black" );
+	setup_player_action_notifies();
+	level thread player_pickup_beretta();
+	level thread stop_intro_effects();
+	map_npcs = [];
+	shack_guards = [];
+	level.npcs_in_combat = [];
+	shack_guards = get_living_ai_array( "shack_guard1", "script_noteworthy" );
+	shack_guards = array_combine( shack_guards, get_living_ai_array( "shack_guard2", "script_noteworthy" ) );
+	for ( i = 0; i < shack_guards.size; i++ )
+	{		
+		shack_guards[i].ignoreall = true;
+	}
+	map_npcs = get_living_ai_array( "base_pop", "script_noteworthy" );
+	for ( i = 0; i < map_npcs.size; i++ )
+	{
+		map_npcs[ i ].pacifist = false;
+	}
+//	level.player.ignoreme = true;
+	level thread shack_guard1_dead();
+	level thread shack_guard2_dead();
+	shack_volume = getentarray( "shack", "targetname" );
+	if ( isdefined(shack_volume) )
+		for (i = 0; i < shack_volume.size; i++)
+		shack_volume[i] thread shack_volume();
+	boss_music_vol = getentarray( "boss_music_vol", "targetname" );
+	if ( isdefined(boss_music_vol) )
+	{
+//		iprintln( "boss_music_vol exists" );
+		for (i = 0; i < boss_music_vol.size; i++)
+		boss_music_vol[i] thread boss_music_vol_controller();	
+	}
+	battlechatter_off( "axis" );	
+	thread lootable_equipment();
+}
+obj_VIP()
+{
+	VIP = getent("obj_VIP", "targetname"); 
+	objective_add(1, "active", &"NOAH_TEST_OBJ_VIP", ( VIP.origin) ); //add obj.
+	objective_current(1); //current objective
+ 	thread obj_RADIO(); 
+ 	thread obj_LZ();
+ 	level waittill( "near_boss" );
+ 	VIP = getentarray("obj_VIP", "targetname");
+	VIP = scripted_spawn_map( undefined, undefined, true, VIP[0]);
+//	iprintln( "obj_VIP waiting" );
+ 	VIP waittill( "death" ); //wait till the trigger is triggered
+//	iprintln( "obj_VIP dead" );
+	flag_set( "obj_VIP_Complete" );	
+	objective_state(1, "done");
+	musicStop(3);
+	wait 3.1;	
+	flag_set ( "music_playing" );
+	MusicPlayWrapper( "tension_maintheme_groove" );	
+	thread music_decay();
+
+}
+obj_RADIO()
+{
+	obj_RADIO = getent("obj_RADIO", "targetname"); 
+	objective_add(2, "active", &"NOAH_TEST_OBJ_RADIO", getent("obj_RADIO","targetname").origin ); //add obj.
+	objective_current(1, 2); //current objective 
+	obj_RADIO sethintstring( &"NOAH_TEST_OBJ_RADIO_HINT" );			
+	obj_RADIO waittill("trigger"); //wait till the trigger is triggered	
+	flag_set( "obj_RADIO_Complete" );	
+	objective_state(2, "done");
+	musicStop(3);
+	wait 3.1;	
+	state = "objComplete";
+	level thread music_controller( state );	
+	thread music_decay();
+	obj_RADIO delete(); //deletes radio volume
+	wait 2; //fill in however long you like (in seconds)
+}
+obj_LZ()
+{
+	level endon( "obj_LZ_done" );
+	while ( true )
+	{
+		wait 0.5;
+//		iprintln( "obj_LZ Loop" );
+		if ( flag ( "obj_VIP_Complete" ) && flag ( "obj_RADIO_Complete" ) )
+		{
+//			iprintln( "obj_LZ tripped" );
+			wait 4.0;
+			obj_LZ = getent("obj_LZ_vol", "targetname"); 
+			objective_add(1, "active", &"NOAH_TEST_OBJ_LZ", getent("obj_LZ_vol","targetname").origin ); //add obj.
+			objective_current(1); //current objective
+			level notify ( "obj_LZ_set" );
+			obj_LZ waittill("trigger"); //wait till the trigger is triggered
+			flag_set( "obj_LZ_Complete" );	
+			objective_state(1, "done");
+			thread extraction_helo();
+			lines = &"NOAH_TEST_HELI_ENROUTE";
+			thread introscreen_feed_lines( lines );
+			level notify( "obj_LZ_done" );			
+		}
+	}
+}
+/*
+test_LZ()
+{
+//	iprintln( "test_LZ waiting" );
+	obj_LZ = getent( "obj_LZ_vol" , "targetname"); 
+	obj_LZ waittill("trigger"); //wait till the trigger is triggered
+	thread extraction_helo();
+	lines = &"NOAH_TEST_HELI_ENROUTE";
+	thread introscreen_feed_lines( lines );
+}
+*/
+obj_DEFEND()
+{
+	objective_add(1, "active", &"NOAH_TEST_OBJ_DEFEND", level.helicopter.origin ); //add obj.
+	objective_current(1); //current objective 
+	level notify ( "obj_DEFEND_set" );
+	delaythread( 3, ::LZ_Waves );
+	musicStop(3);
+	wait 3.1;
+	state = "nearBoss";
+	level thread music_controller( state );
+	thread music_decay();
+	level notify( "obj_DEFEND" );
+/*	wait 120; // Hold out for two minutes
+	flag_set( "obj_DEFEND_Complete" );	
+	objective_state(1, "done");	
+	if ( !flag ( "LZ_Clear" ) )
+	thread obj_EXIT();
+*/}
+obj_EXIT()
+{
+	flag_set( "LZ_Clear" );
+	obj_EXIT = getent("obj_EXIT_vol", "targetname"); 
+	objective_add(1, "active", &"NOAH_TEST_OBJ_EXIT", level.helicopter.origin ); //add obj.
+	objective_current(1); //current objective 
+	obj_EXIT sethintstring( &"NOAH_TEST_OBJ_HELI_HINT" );		
+	obj_EXIT waittill("trigger"); 	
+	flag_set( "obj_EXIT_Complete" );	
+	objective_state(1, "done");
+	thread game_over();
+}
+lootable_equipment()
+{
+	fraggrenade_vol = getentarray( "fraggrenade_vol", "targetname" );
+	if ( isdefined(fraggrenade_vol) )
+	{
+		for (i = 0; i < fraggrenade_vol.size; i++)
+		fraggrenade_vol[i] thread grenades();	
+	}
+	flashbang_vol = getentarray( "flashbang_vol", "targetname" );
+	if ( isdefined(flashbang_vol) )
+	{
+		for (i = 0; i < flashbang_vol.size; i++)
+		flashbang_vol[i] thread flashbangs();	
+	}
+}
+grenades()
+{
+	self sethintstring( &"NOAH_TEST_GRENADE_HINT" );			
+	self waittill("trigger"); //wait till the trigger is triggered
+	curGrenades = level.player GetWeaponAmmoStock( "fraggrenade" );
+	if ( curGrenades < 4 )
+	{
+		level.player SetWeaponAmmoStock( "fraggrenade", 1 );		
+		level.player giveWeapon( "fraggrenade" );
+		level.player SetWeaponAmmoClip( "fraggrenade", curGrenades + 1 );	
+		grenade = getent( self.target, "targetname" );
+		grenade delete();
+		self delete();
+	}
+}
+flashbangs()
+{
+	self sethintstring( &"NOAH_TEST_FLASHBANG_HINT" );				
+	self waittill("trigger"); //wait till the trigger is triggered
+	curFlashbangs = level.player GetWeaponAmmoStock( "flash_grenade" );
+	if ( curFlashbangs < 4 )
+	{
+		level.player SetWeaponAmmoStock( "flash_grenade", 1 );
+		level.player giveWeapon( "flash_grenade" );
+		level.player SetWeaponAmmoClip( "flash_grenade", curFlashbangs + 1 );
+		flashbang = getent( self.target, "targetname" );
+		flashbang delete();	
+		self delete();	
+	}
+}
+setup_player_action_notifies()
+{
+//	wait 0.1;
+	level.player notifyOnCommand("prone", "goprone");
+	level.player notifyOnCommand("crouch", "gocrouch");
+	level.player notifyOnCommand("stand", "+gostand");	
+	level.player notifyOnCommand("movement","+forward");
+	level.player notifyOnCommand("movement","+back" );
+	level.player notifyOnCommand("movement","+moveleft" );
+	level.player notifyOnCommand("movement","+moveright" );
+	level.player notifyOnCommand("movement","+breath_sprint");	
+	level.player notifyOnCommand("movement","-breath_sprint");
+	level.player notifyOnCommand("NVGs","+nightvision"); 
+	level.player notifyOnCommand("NVGs","-nightvision"); 	
+}
+stop_intro_effects()
+{
+//	iprintln( "stop_intro_effects" );
+	level endon( "player_moved" );
+	slowview();	
+	while ( true )
+	{
+//		wait 3.0; //wait for intro and fade in to finish
+//		level.player freezeControls( false );
+		level music_controller();		
+		msg = level.player waittill_any_return( "movement" );
+		if ( !isdefined(msg) )
+			break;
+		if ( msg == "movement" )
+		{
+			level notify("stop_intro_effects");
+			level.player play_sound_in_space( "breathing_better" );
+			level.player enableWeapons();
+			setblur( 0, 0 );
+			level.player AllowStand( true );
+			level.player AllowProne( true );
+			level.player AllowJump( true );
+			level.player AllowLean( true );
+			level.player AllowSprint( true );
+			wait 0.1;
+			level thread obj_VIP();
+			level notify("player_moved");
+			break;
+		}
+	}
+}
+fadeOverlay( material )
+{	
+	duration = 5;
+	overlay = newHudElem();
+	overlay.x = 0;
+	overlay.y = 0;
+	overlay setshader ( material, 640, 480);
+	overlay.alignX = "left";
+	overlay.alignY = "top";
+	overlay.horzAlign = "fullscreen";
+	overlay.vertAlign = "fullscreen";
+	overlay.alpha = 1;
+	overlay fadeOverTime( duration );
+	overlay.alpha = 0;
+	MusicStop( duration );
+	wait duration;
+	overlay destroy();	
+}
+slowview()
+{
+	level thread player_random_blur();
+	wait 1;
+	level.player play_sound_in_space( "breathing_hurt" );
+	level thread player_heartbeat_loop();
+}
+player_heartbeat_loop()
+{
+	level endon( "stop_intro_effects" );
+	while( true )
+	{
+		wait 1;
+		level.player play_sound_in_space( "breathing_heartbeat" );
+//		iprintln( "player_heartbeat_loop" );
+		wait 1;
+	}
+}
+player_random_blur()
+{
+//	iprintln( "player_random_blur" );
+	level endon( "stop_intro_effects" );
+	while( true )
+	{	
+		wait 0.05;
+		if ( randomint(100) > 10 )
+			continue;
+		blur = randomint(3)+2;
+		blur_time = randomfloatrange( 0.3, 0.7 );
+		recovery_time = randomfloatrange( 0.3, 1 );
+		setblur( blur * 1.2, blur_time );
+		wait blur_time;
+		setblur( 0, recovery_time );
+//		iprintln( "BLURRY!" ); 
+		wait 2.5;
+	}	
+}
+player_pickup_beretta()
+{
+//	iprintln( "waiting for player to pick-up weapon" );
+	level endon( "player_pickup_beretta" );
+	while( true )
+	{
+		wait 0.1;
+		weapon = level.player getcurrentweapon();
+		if ( weapon == "beretta" )
+		{
+//			level.player takeallweapons();
+//			level.player giveweapon("beretta");
+			level.player SetWeaponAmmoStock( "beretta", 0 );
+			level.player SetWeaponAmmoClip( "beretta", 0 );
+			level notify( "player_pickup_beretta" );			
+			break;
+		}
+	}
+}
+shack_volume()
+{
+	level endon( "guard2_dead" );
+	level endon( "left_vol" );
+//	level endon( "guard2_awake" );
+	array_thread( get_living_ai_array( "shack_guard2", "script_noteworthy" ), ::shack_guard2_think );
+	while ( level.player isTouching ( self ) )
+	{
+		wait 0.5;	
+//		iprintln( "is in shack: " + level.player isTouching( self ) );
+		if ( !level.player isTouching( self ) )
+		{
+			shack_guard2_wakeup();
+			musicStop(1);
+//			wait 1.1;
+			flag_clear ( "NPC_in_combat" );
+			flag_set ( "music_playing" );
+			MusicPlayWrapper( "scoutsniper_surrounded_music" );			
+			musicStop(30);
+			thread music_decay();
+			level notify( "left_vol" );
+			self delete();
+		}
+	}
+}
+shack_guard1_dead()
+{
+	level endon( "guard1_dead" );
+	while ( true )
+	{
+		shack_guard1 = get_living_ai_array( "shack_guard1", "script_noteworthy" );	
+//		shack_guards = array_combine( shack_guards, get_living_ai_array( "shack_guard2", "script_noteworthy" ) );
+//		iprintln( "shack_guard1 LOOP" );		
+		wait 0.5;
+		if( shack_guard1.size <= 0)
+		{
+//			iprintln( "GUARD1 DEAD" );
+			level.player.maxvisibledist = level.stand;		
+			level thread player_stance_checker();			
+			level thread player_speed_checker();
+			level thread setup_shadow_light_vols();
+			flag_set ( "NPC_in_combat" );		
+			waittillframeend;
+			level notify( "guard1_dead" );
+			break;
+		}
+	}
+}
+shack_guard2_dead()
+{
+	level endon( "guard2_dead" );
+//	level endon( "guard2_awake" );	
+	while ( true )
+	{
+		shack_guard2 = get_living_ai_array( "shack_guard2", "script_noteworthy" );	
+//		shack_guards = array_combine( shack_guards, get_living_ai_array( "shack_guard2", "script_noteworthy" ) );
+//		iprintln( "shack_guard2 LOOP" );		
+		wait 0.5;
+		if( shack_guard2.size <= 0)
+		{
+//			iprintln( "GUARD2 DEAD" );
+			musicStop(1);
+			wait 1.1;
+			flag_clear ( "NPC_in_combat" );	
+			flag_set ( "music_playing" );
+			MusicPlayWrapper( "scoutsniper_surrounded_music" );				
+			musicStop(30);
+			thread music_decay();
+			thread spawn_map_NPCs();
+			level notify( "guard2_dead" );
+//			break;
+		}
+	}
+}
+shack_guard2_think()
+{
+	self endon( "death" );
+	self endon( "guard2_awake" );	
+	self waittill( "damage" );
+	shack_guard2_wakeup();
+	musicStop(1);
+	wait 1.1;
+	flag_clear ( "NPC_in_combat" );
+	flag_set ( "music_playing" );
+	MusicPlayWrapper( "scoutsniper_surrounded_music" );	
+	musicStop(30);
+	thread music_decay();
+}
+shack_guard2_wakeup()
+{
+	self endon( "guard2_dead" );
+	level notify( "guard2_awake" );
+//	iprintln( "GUARD2 AWAKE" );
+	shack_guard2 = get_living_ai_array( "shack_guard2", "script_noteworthy" );
+	for ( i = 0; i < shack_guard2.size; i++ )
+	{	
+		shack_guard2[ i ].pacifist = false;
+		shack_guard2[ i ].ignoreall = false;			
+		while ( true )
+		{	
+			wait 1.0;
+			iprintln( "Guard2 Closing" );
+			if ( shack_guard2[ i ] cansee ( level.player ) && distance( shack_guard2[ i ].origin, level.player.origin ) <= 600 )
+			{			
+//				iprintln( "seePlayer" );
+				shack_guard2[ i ].favoriteenemy = level.player;
+			}
+			else if ( distance( shack_guard2[ i ].origin, level.player.origin ) > 600 )
+			{
+//				iprintln( "Guard2 Closing" );
+				shack_guard2[ i ] setgoalpos( level.player.origin );
+				shack_guard2[ i ].goalradius = 32;
+			}		
+/*			wait 0.5;
+			iprintln( "Guard2 Closing" );
+			shack_guard2[ i ] setgoalpos( level.player.origin );
+			shack_guard2[ i ].goalradius = 32;
+			shack_guard2[ i ].favoriteenemy = level.player;
+*/
+		}
+	}
+}
+setup_shadow_light_vols()
+{
+	foliage_volumes = getentarray( "foliage", "targetname" );
+		if ( isdefined(foliage_volumes) )
+			for (i = 0; i < foliage_volumes.size; i++)
+			foliage_volumes[i] thread player_foliage_checker();
+	light_sources = getentarray( "light_source", "targetname" );
+		if ( isdefined(light_sources) )
+			for (i = 0; i < light_sources.size; i++)
+			light_sources[i] thread player_light_checker(); 
+}
+spawn_map_NPCs()
+{
+//	iprintln( "spawn_map_NPCs" );
+	base_pop = getentarray( "base_pop", "script_noteworthy" );
+//	iprintln( "total base_pop is: " + base_pop.size );
+	for ( i=0; i<base_pop.size; i++ )
+	{
+		ai = scripted_spawn_map( undefined, undefined, true, base_pop[i] );
+	}
+	wait 1.0;
+	array_thread( get_living_ai_array( "base_pop", "script_noteworthy" ), ::map_npc_looking );
+	array_thread( get_living_ai_array( "base_pop", "script_noteworthy" ), ::map_npc_dead_cleanup );	
+	sniper = getent( "sniper", "script_noteworthy" );
+	ai = scripted_spawn_map( undefined, undefined, true, sniper);	
+
+}
+//***************************************************STEALTH HACKERY*************************************************************
+map_npc_looking()
+{
+	self endon( "death" );
+	self endon( "spotted" );
+	level endon( "obj_DEFEND" );	
+	self.fovcosine = .5;  // 60 degrees to either side...120 cone...2 / 3 of the default
+	self.pacifist = false;
+	self.ignoreall = false;
+//	iprintln( "LOOKING" );
+//	iprintln( "music_playing = " + flag ( "music_playing" ) );	
+//	iprintln( "music_decay_running = " + flag ( "music_decay_running" ) );	
+	thread ai_brain_music_controller();
+	while ( true )
+	{
+		wait 1.0;	
+		dist = 0;
+		dist = distance( self.origin, level.player.origin );
+		if ( dist <= level.player.maxvisibledist && ( self cansee ( level.player ) ) )
+		{
+//			iprintln( "GOING INTO COMBAT" );				
+			flag_set ( "NPC_in_combat" );
+			flag_clear ( "looking_music_playing" );	
+			level.npcs_in_combat = array_add( level.npcs_in_combat, self );
+//			if ( !flag ( "music_playing" ) )	
+			thread ai_brain_music_controller();			
+//			iprintln( "level.npcs_in_combat: " + level.npcs_in_combat.size );	
+			self map_npc_player_spotted();				
+			self notify( "spotted" );
+		}
+	}
+}
+map_npc_player_spotted()
+{
+	self endon( "death" );
+	self endon( "all_clear" );
+	level endon( "obj_DEFEND" );	
+	self.pacifist = false;
+	self.ignoreall = false;	
+//	iprintln( "SPOTTED" );	
+//	iprintln( "music_playing = " + flag ( "music_playing" ) );
+//	iprintln( "music_decay_running = " + flag ( "music_decay_running" ) );	
+	thread ai_brain_music_controller();	
+	while ( true )	
+	{
+		//wait 1.0;
+		wait 1.0;
+		//iprintln( "I see you!" );
+		if ( distance ( self.origin, level.player.origin ) > 200 )
+		{
+//			iprintln( "CLOSING DISTANCE" );
+			self setgoalpos( level.player.origin );
+			self.goalradius = 199 ;
+			dist = 0;				
+			dist = distance( self.origin, level.player.origin );
+			if ( dist > level.player.maxvisibledist )
+			{		
+//				iprintln( "DAMN IT, LOST HIM" );
+				level.npcs_in_combat = array_remove( level.npcs_in_combat, self );
+//				if ( !flag ( "music_playing" ) )	
+				thread ai_brain_music_controller();				
+//				iprintln( "level.npcs_in_combat: " + level.npcs_in_combat.size );					
+				self map_npc_all_clear();
+				self notify( "all_clear" );
+			}			
+		}
+		else if ( distance ( self.origin, level.player.origin ) <= 200 )
+		{
+//			iprintln( "AT GOAL, HOLDING FAST" );
+			if ( isDefined ( self.enemy ) && isDefined ( self.enemy.origin ) )
+			{			
+//				iprintln( "SHOOT TO KILL" );
+				battlechatter_on( "axis" );
+				self.favoriteenemy = level.player;
+				dist = 0;				
+				dist = distance( self.origin, level.player.origin );
+				if ( dist > level.player.maxvisibledist )
+				{					
+					level.npcs_in_combat = array_remove( level.npcs_in_combat, self );	
+//					if ( !flag ( "music_playing" ) )	
+					thread ai_brain_music_controller();						
+//					iprintln( "level.npcs_in_combat: " + level.npcs_in_combat.size );						
+					self map_npc_all_clear();
+					self notify( "all_clear" );
+				}
+			}
+		}
+	}
+}
+map_npc_all_clear()
+{	
+//	iprintln( "ALL CLEAR CALLED" );
+	self endon( "death" );
+	level endon( "obj_DEFEND" );	
+	self clearEnemy();
+	self clearentitytarget();
+	self.favoriteenemy = undefined;
+	self.target = undefined;
+	self.ignoreall = true;
+	self.pacifist = true;	
+	thread ai_brain_music_controller();	
+	wait 1.0;
+	if ( isdefined( self.script_patroller ) )
+	{	
+		if ( isdefined( self.last_patrol_goal ) )
+		{
+//				iprintln( "Patrolling" );
+				self.target = self.last_patrol_goal.targetname;	
+				self thread maps\_patrol::patrol();							
+				if  ( level.npcs_in_combat.size <= 0 )
+				{
+//					iprintln( "No one fighting, clearing combat flag" );					
+					flag_clear ( "NPC_in_combat" );
+					flag_clear ( "spotted_music_playing" );	
+//					iprintln( "music_playing = " + flag ( "music_playing" ) );	
+//					iprintln( "music_decay_running = " + flag ( "music_decay_running" ) );						
+//					if ( !flag ( "music_playing" ) )
+					thread ai_brain_music_controller();
+//					iprintln( "MAP ALL CLEAR" );
+				}
+		}
+	}
+	if ( !isdefined( self.script_patroller ) )
+	{
+		if  ( level.npcs_in_combat.size <= 0 )
+		{	
+//			iprintln( "No one fighting, clearing combat flag" );					
+			flag_clear ( "NPC_in_combat" );
+			flag_clear ( "spotted_music_playing" );	
+//			iprintln( "music_playing = " + flag ( "music_playing" ) );	
+//			iprintln( "music_decay_running = " + flag ( "music_decay_running" ) );			
+//			if ( !flag ( "music_playing" ) )
+			thread ai_brain_music_controller();
+//			iprintln( "MAP ALL CLEAR" );
+		}
+	}
+	self map_npc_looking();
+}
+map_npc_dead_cleanup()
+{
+	self waittill( "death" );
+//	iprintln( "HE'S DEAD JIM" );
+	level.npcs_in_combat = array_remove( level.npcs_in_combat, self );
+	if  ( level.npcs_in_combat.size <= 0 )
+	{
+		battlechatter_off( "axis" );
+		flag_clear ( "NPC_in_combat" );
+		flag_clear ( "spotted_music_playing" );	
+//		iprintln( "music_playing = " + flag ( "music_playing" ) );	
+//		iprintln( "music_decay_running = " + flag ( "music_decay_running" ) );			
+//		if ( !flag ( "music_playing" ) )
+		thread ai_brain_music_controller();	
+//		iprintln( "MAP ALL CLEAR" );
+//		iprintln( "level.npcs_in_combat: " + level.npcs_in_combat.size );		
+	}
+//	iprintln( "level.npcs_in_combat: " + level.npcs_in_combat.size );
+}
+player_foliage_checker()
+{	
+	level endon( "obj_DEFEND" );
+	if ( !isDefined ( self.in_volume ) )
+	{
+		self.in_volume = 0;
+//		iprintln( "SETTING self.in_volume = 0" );
+	}
+	while ( true )
+	{
+		wait 0.5;	
+			if ( level.player isTouching( self ) )
+			{
+//				iprintln( "isTouching shadow: " + level.player isTouching( self ) );
+				if ( self.in_volume == 0  )
+				{
+					self.in_volume = 1;
+					flag_set ( "in_shadow" );	
+//					iprintln( "in shadow" );
+//					iprintln( "maxvisibledist: " + level.player.maxvisibledist );
+					player_visibility_checker();
+				}
+			}
+			else if ( !level.player isTouching( self ) )
+			{
+//				iprintln( "isTouching shadow: " + level.player isTouching( self ) );
+				if ( self.in_volume == 1  )
+				{
+					self.in_volume = 0;
+					flag_clear ( "in_shadow" );
+//					iprintln( "exit shadow" );
+					player_visibility_checker();
+				}
+			}
+	}
+}
+player_light_checker()
+{	
+	level endon( "obj_DEFEND" );
+	if ( !isDefined ( self.in_volume ) )
+	{
+		self.in_volume = 0;
+//		iprintln( "SETTING self.in_volume = 0" );
+	}
+	while ( true )
+	{
+		wait 0.5;	
+			if ( level.player isTouching( self ) )
+			{
+//				iprintln( "isTouching light: " + level.player isTouching( self ) );
+				if ( self.in_volume == 0  )
+				{
+					self.in_volume = 1;
+					flag_set ( "in_light" );	
+//					iprintln( "in light" );
+					player_visibility_checker();
+				}
+			}
+			else if ( !level.player isTouching( self ) )
+			{
+//				iprintln( "isTouching light: " + level.player isTouching( self ) );
+				if ( self.in_volume == 1 )
+				{
+					self.in_volume = 0;
+					flag_clear ( "in_light" );
+//					iprintln( "exit light" );
+					player_visibility_checker();	
+				}
+			}
+//		}
+	}
+}
+player_stance_checker()
+{
+	level endon( "obj_DEFEND" );
+	while ( true )
+	{
+//		iprintln( "Awaiting Stance Input..." );
+		stance = level.player waittill_any_return( "stand", "crouch", "prone" );
+		wait 0.5;	
+		player_visibility_checker();	
+//		iprintln( "maxvisibledist: " + level.player.maxvisibledist );
+	}
+}
+player_visibility_checker()
+{
+	level endon( "obj_DEFEND" );
+ 	stance = level.player getstance();
+ 	if ( stance == "stand" )
+ 	{
+// 		iprintln( "Standing");
+		if ( flag ( "in_shadow" ) )
+		{
+			level.player.maxvisibledist = level.stand;
+			level.player.maxvisibledist = ( level.player.maxvisibledist * 0.5 );
+//			iprintln( "In Shadow");
+		}
+		else if ( flag ( "in_light" ) )
+		{
+			level.player.maxvisibledist = level.stand;
+			level.player.maxvisibledist = ( level.player.maxvisibledist * 2 );
+//			iprintln( "In Light");			
+		}
+		else if (!flag ( "in_shadow" ) && !flag ( "in_light" ) )
+		{
+			level.player.maxvisibledist = level.stand;
+//			iprintln( "Normal");				
+		}
+	}
+//	case "crouch":
+ 	if ( stance == "crouch" )
+ 	{
+ //	 	iprintln( "Crouching");
+		if ( flag ( "in_shadow" ) )
+		{
+			level.player.maxvisibledist = level.crouch;
+			level.player.maxvisibledist = ( level.player.maxvisibledist * 0.5 );
+//			iprintln( "In Shadow");			
+		}
+		else if ( flag ( "in_light" ) )
+		{
+			level.player.maxvisibledist = level.crouch;
+			level.player.maxvisibledist = ( level.player.maxvisibledist * 2 );
+//			iprintln( "In Light");				
+		}
+		else if (!flag ( "in_shadow" ) && !flag ( "in_light" ) )
+		{
+			level.player.maxvisibledist = level.crouch;
+//			iprintln( "Normal");			
+		}	
+	}
+//	case "prone":
+ 	if ( stance == "prone" )
+ 	{
+ //	 	iprintln( "Prone");
+		if ( flag ( "in_shadow" ) )
+		{
+			level.player.maxvisibledist = level.prone;
+			level.player.maxvisibledist = ( level.player.maxvisibledist * 0.5 );
+//			iprintln( "In Shadow");			
+		}
+		else if ( flag ( "in_light" ) )
+		{
+			level.player.maxvisibledist = level.prone;
+			level.player.maxvisibledist = ( level.player.maxvisibledist * 2 );
+//			iprintln( "In Light");				
+		}
+		else if (!flag ( "in_shadow" ) && !flag ( "in_light" ) )
+		{
+			level.player.maxvisibledist = level.prone;
+//			iprintln( "Normal");			
+		}	
+	}
+//	iprintln( "maxvisibledist: " + level.player.maxvisibledist );	
+}
+player_speed_checker()
+{
+	level endon( "obj_DEFEND" );
+	while ( true )
+	{	
+		wait 1.0;
+			velocity = undefined;
+			velocity = length( level.player getVelocity() );	
+//			iprintln( "velocity: " + velocity );
+			if ( velocity >= 250 && level.player.maxvisibledist <= level.stand )
+			{
+//				iprintln( "VELOCITY >= 210!");
+				level.player.maxvisibledist = ( level.player.maxvisibledist * 2 );	
+//				iprintln( "maxvisibledist: " + level.player.maxvisibledist );
+//				iprintln( "velocity: " + velocity );
+			}
+			else if ( velocity >= 1 && velocity < 250 && level.player.maxvisibledist > level.stand )
+			{
+//				iprintln( "RESETTING RUN VIS");
+//				iprintln( "maxvisibledist: " + level.player.maxvisibledist );
+				player_visibility_checker();			
+			}
+//		}
+	}	
+}
+//***************************************************STEALTH HACKERY*************************************************************
+boss_music_vol_controller()
+{
+//	iprintln( "boss_music_vol waiting" );
+	level endon( "player_entered_boss_music_vol" );
+	self waittill( "trigger" );
+	while ( level.player isTouching( self ) )
+	{
+//		iprintln( "boss_music_vol isTouching" );
+//		if ( flag ( "music_playing" ) )
+//		{
+			flag_clear ( "music_playing" );
+			musicStop(3);
+			wait 3.1;
+//		}
+		state = "nearBoss";
+		level music_controller( state );
+		level notify( "near_boss" );
+		self delete();
+		level notify( "player_entered_boss_music_vol" );
+		break;		
+	}
+}
+ai_brain_music_controller()
+{
+//	iprintln( "ai_brain_music_controller called" );
+//	iprintln( "Number in combat:" + level.npcs_in_combat.size );
+//	iprintln( "Combat flag is:" + flag( "NPC_in_combat" ));
+	if ( level.npcs_in_combat.size <= 0 )
+	{
+		if ( !flag ( "NPC_in_combat" ) && !flag ( "looking_music_playing" ) )			
+		{
+//			iprintln( "ai_brain_music_controller no combat" );
+			num = randomintrange( 10, 15 );
+			waitdur = num + 0.1;
+			musicStop(num);
+			wait waitdur;
+			flag_clear ( "music_playing" );
+			state = "looking";
+			music_controller(state);	
+		}
+	}
+	if ( level.npcs_in_combat.size >= 1 )
+	{
+//		Add combat music
+		if ( flag ( "NPC_in_combat" ) && !flag ( "spotted_music_playing" ) )	
+		{	
+//			iprintln( "ai_brain_music_controller in combat" );
+			musicStop(1);
+			wait 1.1;
+			flag_clear ( "music_playing" );
+			state = "spotted";
+			music_controller(state);
+		}
+	}
+}
+music_controller(state)
+{
+//	iprintln( "music_playing = " + flag ( "music_playing" ) );
+//	iprintln( "music_decay_running = " + flag ( "music_decay_running" ) );	
+	if (!flag ("music_playing") && !flag ("LZ_Clear"))
+	{
+		if ( isDefined ( state ) )
+//			iprintln( "music state is: " + state );
+		if ( isDefined ( state ) && state == "spotted" )
+		{	
+//			ACTION MUSIC
+			flag_set ( "music_playing" );
+			flag_set ( "spotted_music_playing" );
+			MusicPlayWrapper( "blackout_hurry" );
+
+		}
+		else if ( isDefined ( state ) && state == "shackCleared" )
+		{
+//			SHACK EXCITEMENT	
+			flag_set ( "music_playing" );
+			MusicPlayWrapper( "scoutsniper_surrounded_music" );
+
+		}		
+		else if ( isDefined ( state ) && state == "looking" )
+		{
+//			NPCs AWAKE	
+			flag_set ( "music_playing" );
+			flag_set ( "looking_music_playing" );
+			MusicPlayWrapper( "blackout_nightvision" );
+
+		}
+		else if ( isDefined ( state ) && state == "objComplete" )
+		{
+//			OBJECTIVE COMPLETE		
+			flag_set ( "music_playing" );
+			MusicPlayWrapper( "tension_maintheme_groove" );	
+
+		}	
+		else if ( isDefined ( state ) && state == "nearBoss" )
+		{
+//			BOSS MUSIC		
+			flag_set ( "music_playing" );
+			MusicPlayWrapper( "cargoship_intro_music" );
+		}	
+		else 
+		{
+//			MAIN THEME		
+			flag_set ( "music_playing" );
+			MusicPlayWrapper( "russian_suspense_01_music" );
+		}
+	}	
+	thread music_decay();
+}
+music_decay()
+{	
+//	iprintln( "MUSIC DECAY CALLED" );
+	if ( flag ( "music_playing" ) && !flag ("music_decay_running") )		
+	{
+//		iprintln( "MUSIC LOCKED" );
+		flag_set ( "music_decay_running" );
+		wait randomintrange( 20, 40);
+		flag_clear ( "music_playing" );
+		flag_clear ( "music_decay_running" );
+//		iprintln( "MUSIC UNLOCKED" );		
+	}
+}
+extraction_helo()
+{
+	switch (randomint(3))
+	{
+		case 0:
+//		iprintln( "extraction_helo case 0" );
+		level.helicopter = spawn_vehicle_from_targetname( "vehicle_blackhawk1" );
+		level.helicopter.ignoreme = true;
+		level.helicopter thread maps\_vehicle::lights_on( "interior" );
+		level.helicopter thread maps\_vehicle::lights_on( "running" );	
+//		blackhawk_collision = getent( "vehicle_blackhawk_hero", "targetname" );
+//		blackhawk_collision linkto( level.helicopter, "tag_origin", (0,0,0), (0,0,0) );
+		thread maps\_vehicle::gopath( level.helicopter );
+		if ( isDefined ( level.helicopter ) )
+		thread LZ_vol_controller();
+			break;
+		case 1:
+//		iprintln( "extraction_helo case 1" );	
+		level.helicopter = spawn_vehicle_from_targetname( "vehicle_blackhawk2" );	
+		level.helicopter.ignoreme = true;		
+		level.helicopter thread maps\_vehicle::lights_on( "interior" );	
+		level.helicopter thread maps\_vehicle::lights_on( "running" );	
+//		blackhawk_collision = getent( "vehicle_blackhawk_hero", "targetname" );
+//		blackhawk_collision linkto( level.helicopter, "tag_origin", (0,0,0), (0,0,0) );		
+		thread maps\_vehicle::gopath( level.helicopter );
+		if ( isDefined ( level.helicopter ) )		
+		thread LZ_vol_controller();		
+			break;
+		case 2:
+//		iprintln( "extraction_helo case 2" );		
+		level.helicopter = spawn_vehicle_from_targetname( "vehicle_blackhawk3" );	
+		level.helicopter.ignoreme = true;		
+		level.helicopter thread maps\_vehicle::lights_on( "interior" );	
+		level.helicopter thread maps\_vehicle::lights_on( "running" );		
+//		blackhawk_collision = getent( "vehicle_blackhawk_hero", "targetname" );
+//		blackhawk_collision linkto( level.helicopter, "tag_origin", (0,0,0), (0,0,0) );		
+		thread maps\_vehicle::gopath( level.helicopter );
+		if ( isDefined ( level.helicopter ) )		
+		thread LZ_vol_controller();		
+			break;
+		default:
+//		iprintln( "extraction_helo case DEFAULT" );		
+		level.helicopter = spawn_vehicle_from_targetname( "vehicle_blackhawk2" );
+		level.helicopter.ignoreme = true;		
+		level.helicopter thread maps\_vehicle::lights_on( "interior" );	
+		level.helicopter thread maps\_vehicle::lights_on( "running" );		
+//		blackhawk_collision = getent( "vehicle_blackhawk_hero", "targetname" );
+//		blackhawk_collision linkto( level.helicopter, "tag_origin", (0,0,0), (0,0,0) );		
+		thread maps\_vehicle::gopath( level.helicopter );		
+		if ( isDefined ( level.helicopter ) )		
+		thread LZ_vol_controller();		
+			break;
+	}
+
+}
+LZ_vol_controller()
+{
+//	iprintln( "LZ_vol_controller" );
+	level endon( "heloLZ" );	
+//	struct = getstruct( "auto2625", "targetname" );
+//	struct = getstruct( "auto2623", "targetname" );
+	struct = getstruct( "heli_dest", "targetname" );	
+	if ( isDefined ( struct ) && isDefined ( level.helicopter ) )
+	{
+//		iprintln( "heloLZ waiting" );	
+		struct waittill( "trigger" );
+		obj_LZ_vol = getent( "obj_LZ_vol", "targetname" );	
+		obj_LZ_vol delete();	
+		wait 1.0;
+		level.helicopter vehicle_detachfrompath();
+		level.helicopter setspeed( 20, 20 );			
+		level.helicopter vehicle_land();		
+		delaythread( 3, ::obj_DEFEND );
+		level notify( "heloLZ" );
+	}
+}
+LZ_waves()
+{
+//	iprintln( "spawning: lz_group_1" );
+	lz_group_1 = getentarray( "lz_group_1", "script_noteworthy" );
+	for ( i=0; i<lz_group_1.size; i++ )
+	{
+		ai = scripted_spawn_map( undefined, undefined, true, lz_group_1[i] );
+		array_thread( get_living_ai_array( "lz_group_1", "script_noteworthy" ), ::LZ_think );	
+	}
+	thread LZ_wave_counter();
+	wait 15.0;
+//	iprintln( "spawning: lz_group_2" );
+	lz_group_2 = getentarray( "lz_group_2", "script_noteworthy" );
+	for ( i=0; i<lz_group_2.size; i++ )
+	{
+		ai = scripted_spawn_map( undefined, undefined, true, lz_group_2[i] );
+		array_thread( get_living_ai_array( "lz_group_2", "script_noteworthy" ), ::LZ_think );	
+	}	
+	wait 20.0;
+//	iprintln( "spawning: lz_group_3" );
+	lz_group_3 = getentarray( "lz_group_3", "script_noteworthy" );
+	for ( i=0; i<lz_group_3.size; i++ )
+	{
+		ai = scripted_spawn_map( undefined, undefined, true, lz_group_3[i] );
+		array_thread( get_living_ai_array( "lz_group_3", "script_noteworthy" ), ::LZ_think );	
+	}
+	wait 25.0;
+//	iprintln( "spawning: lz_group_4" );	
+	lz_group_4 = getentarray( "lz_group_4", "script_noteworthy" );
+	for ( i=0; i<lz_group_4.size; i++ )
+	{
+		ai = scripted_spawn_map( undefined, undefined, true, lz_group_4[i] );
+		array_thread( get_living_ai_array( "lz_group_4", "script_noteworthy" ), ::LZ_think );	
+	}
+	flag_set( "LZ_SpawnComplete" );
+}
+scripted_spawn_map( value, key, stalingrad, spawner )
+{
+	if ( !isdefined( spawner ) )
+		spawner = getent( value, key );
+	if ( isdefined( stalingrad ) )
+		ai = spawner stalingradSpawn();
+	else
+		ai = spawner dospawn();
+	spawn_failed( ai );
+//	assert( !isDefined( ai ) );
+	return ai;
+}
+LZ_wave_counter()
+{
+	LZ_NPCs = [];
+	self endon( "LZ_wave_counter done" );
+	while ( !flag ( "LZ_Clear" ) )
+	{
+		wait 1.0;
+//		iprintln( "LZ_NPCs: " + LZ_NPCs.size );
+		LZ_NPCs = get_living_ai_array( "lz_group_1", "script_noteworthy" );		
+//		LZ_NPCs = array_combine( LZ_NPCs, get_living_ai_array( "lz_group_1", "script_noteworthy" ) );		
+		LZ_NPCs = array_combine( LZ_NPCs, get_living_ai_array( "lz_group_2", "script_noteworthy" ) );	
+		LZ_NPCs = array_combine( LZ_NPCs, get_living_ai_array( "lz_group_3", "script_noteworthy" ) );	
+		LZ_NPCs = array_combine( LZ_NPCs, get_living_ai_array( "lz_group_4", "script_noteworthy" ) );	
+		if ( LZ_NPCs.size <= 0 && flag ( "LZ_SpawnComplete" ))
+		{
+//			iprintln( "LZ_NPCs.size <= 0" );
+//			flag_set( "obj_DEFEND_Complete" );	
+			objective_state(1, "done");	
+			musicStop(1);
+			wait 1.1;
+			MusicPlayWrapper( "credits_bog_victory" );			
+			thread obj_EXIT();
+			self notify( "LZ_wave_counter done" );			
+		}
+	}
+}
+LZ_think()
+{
+//	iprintln( "LZ_think running" );
+	self endon( "death" );
+	self endon( "seePlayer" );
+//	if ( isDefined ( self.enemy ) && isDefined ( )
+	while ( true )
+	{
+		wait 0.5;
+//		iprintln( "hunting" );
+		level.player.maxvisibledist = 3000;
+		self setgoalpos( level.player.origin );
+		self.goalradius = 32;
+		if ( self cansee ( level.player ) && distance( self.origin, level.player.origin ) <= 600 )
+		{
+			self.favoriteenemy = level.player;
+//			iprintln( "seePlayer" );
+//			self notify( "seePlayer" );
+		}
+		else if ( distance( self.origin, level.player.origin ) > 600 )
+		{
+			self setgoalpos( level.player.origin );
+			self.goalradius = 32;
+		}
+	}
+}
+game_over()
+{
+	lines = &"NOAH_TEST_OBJ_COMPLETED";
+	thread introscreen_feed_lines( lines );
+        level.player freezeControls( true );
+	thread maps\_introscreen::introscreen_generic_black_fade_in( 16, 3);
+	wait 15.0;
+//	thread maps\_endmission::main();	
+//	missionsuccess( "killhouse", false );
+	changelevel( "" );
+}
